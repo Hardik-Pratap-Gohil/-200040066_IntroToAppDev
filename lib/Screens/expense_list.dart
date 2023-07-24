@@ -18,7 +18,7 @@ class _ExpenseListState extends State<ExpenseList> {
   Widget build(BuildContext context) {
     final expenseListModel = Provider.of<ExpenseListModel>(context);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(200, 0, 0, 0),
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text(
