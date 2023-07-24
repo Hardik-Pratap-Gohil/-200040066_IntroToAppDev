@@ -38,7 +38,7 @@ class _ExpenseCardState extends State<ExpenseCard> {
             IconButton(
                 onPressed: () => {
                       setState(() {
-                        expenseListModel.expenseList.remove(widget.expense);
+                         expenseListModel.deleteExpense(widget.expense);
                       })
                     },
                 icon: Icon(Icons.delete))
