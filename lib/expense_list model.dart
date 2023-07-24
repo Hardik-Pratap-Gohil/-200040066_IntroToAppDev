@@ -16,5 +16,8 @@ class ExpenseListModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteExpense(Expense expense){
+    _expenseList.remove(expense);
+    notifyListeners();
   // Add any other methods to modify the expenseList as needed
 }
