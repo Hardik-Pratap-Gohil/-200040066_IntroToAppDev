@@ -3,8 +3,10 @@
 class Expense {
   String name = "Expense";
   int amount = 0;
-  Expense(String name, int amount) {
+  late String id;
+  Expense(String name, int amount, String id) {
     this.name = name;
     this.amount = amount;
+    this.id = id;
   }
 }
