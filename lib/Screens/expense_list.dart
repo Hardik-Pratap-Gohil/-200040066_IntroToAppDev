@@ -1,10 +1,9 @@
-// ignore_for_file: unused_import, unused_local_variable, prefer_const_constructors
+// ignore_for_file: unused_element, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:my_budget_app/expense.dart';
-import 'package:my_budget_app/expense_card.dart';
-import 'package:provider/provider.dart';
-import 'package:my_budget_app/expense_list model.dart';
+import 'package:my_budget_app/database.dart';
+import 'package:my_budget_app/item_list.dart';
+import 'package:my_budget_app/item_list_total.dart';
 
 class ExpenseList extends StatefulWidget {
   const ExpenseList({super.key});
@@ -14,14 +13,15 @@ class ExpenseList extends StatefulWidget {
 }
 
 class _ExpenseListState extends State<ExpenseList> {
+  FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
-    final expenseListModel = Provider.of<ExpenseListModel>(context);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(200, 0, 0, 0),
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text(
+        title: const Text(
           "Budget Tracker",
           style: TextStyle(
             color: Colors.white,
@@ -29,45 +29,15 @@ class _ExpenseListState extends State<ExpenseList> {
         ),
         leading: IconButton(
             onPressed: () => {Navigator.pop(context)},
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
       ),
-      body: Center(
-        child: Column(children: [
-          SizedBox(
-            height: 75,
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              width: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total:",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  Text(
-                    '${expenseListModel.expenseList.fold(0, (previousValue, item) => previousValue + item.amount)}',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  IconButton(
-                      iconSize: 24,
-                      color: Colors.black,
-                      onPressed: () => {},
-                      icon: Icon(Icons.arrow_drop_down))
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 50),
-          Column(
-            children: expenseListModel.expenseList
-                .map((e) => ExpenseCard(expense: e))
-                .toList(),
+      body: Column(
+        children: [
+          ItemsListTotal(),
+          Expanded(
+            child: ItemsList(),
           )
-        ]),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -78,7 +48,7 @@ class _ExpenseListState extends State<ExpenseList> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Add Expense'),
+                title: const Text('Add Expense'),
                 content: Form(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -87,14 +57,15 @@ class _ExpenseListState extends State<ExpenseList> {
                         onChanged: (value) {
                           name = value;
                         },
-                        decoration: InputDecoration(labelText: 'Expense Name'),
+                        decoration:
+                            const InputDecoration(labelText: 'Expense Name'),
                       ),
                       TextFormField(
                         onChanged: (value) {
                           amount = int.tryParse(value) ?? 0;
                         },
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Amount'),
+                        decoration: const InputDecoration(labelText: 'Amount'),
                       ),
                     ],
                   ),
@@ -104,18 +75,18 @@ class _ExpenseListState extends State<ExpenseList> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                   TextButton(
                     onPressed: () {
                       if (name != null && amount != null) {
                         setState(() {
-                          expenseListModel.addExpense(Expense(name!, amount!));
+                          firestoreService.addExpense(name!, amount!);
                         });
                         Navigator.of(context).pop();
                       }
                     },
-                    child: Text('Save'),
+                    child: const Text('Save'),
                   ),
                 ],
               );
@@ -123,7 +94,7 @@ class _ExpenseListState extends State<ExpenseList> {
           );
         },
         backgroundColor: Colors.green,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
