@@ -1,21 +1,24 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, unused_import
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:my_budget_app/Screens/home.dart';
 import 'package:my_budget_app/Screens/expense_list.dart';
-import 'expense.dart';
-import 'expense_card.dart';
-import 'package:provider/provider.dart';
-import 'package:my_budget_app/expense_list model.dart';
+import 'package:my_budget_app/firebase_options.dart';
+import 'package:my_budget_app/sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(ChangeNotifierProvider(
-    create: (_) => ExpenseListModel(),
-    child: MaterialApp(
-      home: Home(),
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    MaterialApp(
+      initialRoute: "/auth",
       routes: {
-        '/expense': (context) => ExpenseList(),
+        "/auth": (context) => const AuthPage(),
+        "/expense": (context) => const ExpenseList()
       },
     ),
-  ));
+  );
 }
