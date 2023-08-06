@@ -1,11 +1,11 @@
-// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, override_on_non_overriding_member, unused_local_variable
+// ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_budget_app/expense_card.dart';
+import 'package:my_budget_app/database.dart';
+import 'package:my_budget_app/item_list.dart';
+import 'package:my_budget_app/item_list_total.dart';
 import 'package:my_budget_app/expense.dart';
-import 'package:my_budget_app/Screens/expense_list.dart';
-import 'package:provider/provider.dart';
-import 'package:my_budget_app/expense_list model.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,30 +15,55 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  FirestoreService firestoreService = FirestoreService();
+  ItemsList expenseList = ItemsList();
+
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final expenseListModel = Provider.of<ExpenseListModel>(context);
     return Scaffold(
-        backgroundColor: const Color.fromARGB(200, 0, 0, 0),
+        backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.green,
-          title: Text(
-            "Budget Tracker",
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                "Budget Tracker",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                color: Colors.green[300],
+                child: TextButton(
+                    onPressed: signUserOut,
+                    child: Text(
+                      "Sign out",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    )),
+              ),
+            ],
           ),
-          leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+          leading:
+              IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
         ),
         body: Column(
           children: [
             IconButton(
               onPressed: () => {},
-              icon: Icon(Icons.person_2_rounded),
+              icon: const Icon(Icons.person_2_rounded),
               color: Colors.white,
               iconSize: 200,
             ),
-            Text(
+            const Text(
               "Welcome",
               style: TextStyle(
                 color: Colors.white,
@@ -46,8 +71,8 @@ class _HomeState extends State<Home> {
                 letterSpacing: 2,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               "Back!",
               style: TextStyle(
                 color: Colors.white,
@@ -55,32 +80,14 @@ class _HomeState extends State<Home> {
                 letterSpacing: 2,
               ),
             ),
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
             Center(
               child: Card(
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
-                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   width: 400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total:",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        '${expenseListModel.expenseList.fold(0, (previousValue, item) => previousValue + item.amount)}',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      IconButton(
-                          iconSize: 24,
-                          color: Colors.black,
-                          onPressed: () =>
-                              {Navigator.pushNamed(context, '/expense')},
-                          icon: Icon(Icons.arrow_drop_down))
-                    ],
-                  ),
+                  child: ItemsListTotal(),
                 ),
               ),
             ),
