@@ -1,16 +1,10 @@
 # my_budget_app
 
-A new Flutter project.
+A budget tracker app that keeps track of all the income and expenses of an individual
 
-## Getting Started
+##Extra Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1) Register new users
+2) Sign out button
+3) Pop up screens to take inputs
+4) Error handling for functions accessing database
