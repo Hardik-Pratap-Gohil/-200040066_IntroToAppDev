@@ -2,7 +2,7 @@
 
 A budget tracker app that keeps track of all the income and expenses of an individual
 
-##Extra Features
+## Extra Features
 
 1) Register new users
 2) Sign out button
